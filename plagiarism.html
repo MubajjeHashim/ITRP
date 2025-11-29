@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Check | AI Education System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-header h2 {
+            color: var(--secondary);
+        }
+        
+        .plagiarism-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .upload-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .results-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h3 {
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-header h3 i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .upload-text p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-info {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            text-align: left;
+        }
+        
+        .file-info.active {
+            display: block;
+        }
+        
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-name {
+            font-weight: 500;
+        }
+        
+        .file-size {
+            color: #666;
+        }
+        
+        .file-remove {
+            color: var(--danger);
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        /* Upload Options */
+        .upload-options {
+            margin-bottom: 1.5rem;
+        }
+        
+        .option-group {
+            margin-bottom: 1rem;
+        }
+        
+        .option-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .option-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input {
+            margin-right: 0.5rem;
+        }
+        
+        /* Analysis Progress */
+        .analysis-progress {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .analysis-progress.active {
+            display: block;
+        }
+        
+        .progress-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .progress-text {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Results Overview */
+        .results-overview {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .similarity-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .score-excellent {
+            color: var(--success);
+        }
+        
+        .score-good {
+            color: #28a745;
+        }
+        
+        .score-warning {
+            color: var(--warning);
+        }
+        
+        .score-danger {
+            color: var(--danger);
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .score-description {
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Results Details */
+        .results-details {
+            margin-bottom: 2rem;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-card {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .detail-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Sources List */
+        .sources-list {
+            margin-bottom: 2rem;
+        }
+        
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .source-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .source-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .source-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .source-similarity {
+            font-weight: bold;
+            color: var(--danger);
+        }
+        
+        /* Highlighted Text */
+        .highlighted-text {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .text-content {
+            line-height: 1.8;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .highlight.plagiarized {
+            background-color: #f8d7da;
+            border-bottom: 1px dashed var(--danger);
+        }
+        
+        .highlight.cited {
+            background-color: #d1ecf1;
+            border-bottom: 1px dashed var(--success);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-buttons .btn {
+            flex: 1;
+        }
+        
+        /* History Section */
+        .history-section {
+            margin-top: 3rem;
+        }
+        
+        .history-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .history-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .history-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .history-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .history-score {
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .plagiarism-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">My Courses</a></li>
+                        <li><a href="quizbots.html">QuizBots</a></li>
+                        <li><a href="grammar.html">Grammar Tools</a></li>
+                        <li><a href="progress.html">Progress</a></li>
+                        <li><a href="schedule.html">Schedule</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="#" class="active">Plagiarism Check</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="logout.html" class="btn btn-outline">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h2>AI Plagiarism Checker</h2>
+                <a href="grammar.html" class="btn btn-outline" style="background: transparent; border: 1px solid #ddd; color: #666;">
+                    <i class="fas fa-arrow-left"></i> Back to Tools
+                </a>
+            </div>
+            
+            <div class="plagiarism-container">
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-upload"></i> Upload Document</h3>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>Upload Your Document</h4>
+                            <p>Drag and drop your file here or click to browse</p>
+                            <button class="btn btn-primary" id="browseBtn">
+                                <i class="fas fa-folder-open"></i> Browse Files
+                            </button>
+                        </div>
+                        <input type="file" class="file-input" id="fileInput" accept=".doc,.docx,.pdf,.txt,.rtf">
+                    </div>
+                    
+                    <div class="file-info" id="fileInfo">
+                        <div class="file-details">
+                            <div>
+                                <span class="file-name" id="fileName">document.pdf</span>
+                                <span class="file-size" id="fileSize">(2.4 MB)</span>
+                            </div>
+                            <span class="file-remove" id="fileRemove">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="uploadProgress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-options">
+                        <div class="option-group">
+                            <label class="option-label">Document Type</label>
+                            <select class="option-select" id="docType">
+                                <option value="essay">Academic Essay</option>
+                                <option value="research">Research Paper</option>
+                                <option value="thesis">Thesis/Dissertation</option>
+                                <option value="article">Article/Blog Post</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Checking Options</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="webCheck" checked>
+                                <label for="webCheck">Check against web sources</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="academicCheck" checked>
+                                <label for="academicCheck">Check against academic databases</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="citationCheck">
+                                <label for="citationCheck">Exclude properly cited content</label>
+                            </div>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Sensitivity Level</label>
+                            <select class="option-select" id="sensitivity">
+                                <option value="standard">Standard</option>
+                                <option value="strict">Strict</option>
+                                <option value="lenient">Lenient</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;" id="checkPlagiarismBtn">
+                        <i class="fas fa-search"></i> Check for Plagiarism
+                    </button>
+                </div>
+                
+                <!-- Results Section -->
+                <div class="results-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-chart-bar"></i> Analysis Results</h3>
+                    </div>
+                    
+                    <!-- Analysis Progress -->
+                    <div class="analysis-progress" id="analysisProgress">
+                        <div class="progress-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="progress-text">
+                            <h4>Analyzing Your Document</h4>
+                            <p>Checking against billions of web pages and academic sources...</p>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="analysisProgressBar"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span>Sources Checked: <span id="sourcesChecked">0</span></span>
+                            <span>Words Processed: <span id="wordsProcessed">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Overview -->
+                    <div class="results-overview" id="resultsOverview" style="display: none;">
+                        <div class="similarity-score score-good" id="similarityScore">12%</div>
+                        <div class="score-label" id="scoreLabel">Low Similarity - Excellent!</div>
+                        <div class="score-description" id="scoreDescription">
+                            Your document shows minimal similarity with existing sources. This indicates original work with proper citation practices.
+                        </div>
+                    </div>
+                    
+                    <!-- Results Details -->
+                    <div class="results-details" id="resultsDetails" style="display: none;">
+                        <div class="detail-grid">
+                            <div class="detail-card">
+                                <div class="detail-value" id="totalWords">1,247</div>
+                                <div class="detail-label">Total Words</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-value" id="matchedWords">149</div>
+                                <div class="detail-label">Matched Words</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-value" id="sourcesFound">8</div>
+                                <div class="detail-label">Sources Found</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-value" id="citationCount">5</div>
+                                <div class="detail-label">Proper Citations</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sources List -->
+                    <div class="sources-list" id="sourcesList" style="display: none;">
+                        <div class="section-header">
+                            <h4><i class="fas fa-link"></i> Matching Sources</h4>
+                        </div>
+                        
+                        <div class="source-item">
+                            <div class="source-info">
+                                <h4>Wikipedia: Artificial Intelligence</h4>
+                                <p>https://en.wikipedia.org/wiki/Artificial_intelligence</p>
+                            </div>
+                            <div class="source-similarity">8%</div>
+                        </div>
+                        
+                        <div class="source-item">
+                            <div class="source-info">
+                                <h4>Stanford AI Research Paper</h4>
+                                <p>Journal of Machine Learning, 2022</p>
+                            </div>
+                            <div class="source-similarity">3%</div>
+                        </div>
+                        
+                        <div class="source-item">
+                            <div class="source-info">
+                                <h4>MIT OpenCourseware: AI Fundamentals</h4>
+                                <p>https://ocw.mit.edu/courses/ai-fundamentals</p>
+                            </div>
+                            <div class="source-similarity">1%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Highlighted Text -->
+                    <div class="highlighted-text" id="highlightedText" style="display: none;">
+                        <div class="section-header">
+                            <h4><i class="fas fa-highlighter"></i> Document Analysis</h4>
+                        </div>
+                        <div class="text-content" id="textContent">
+                            <p>Artificial intelligence (AI) is intelligence demonstrated by machines, as opposed to the natural intelligence displayed by animals including humans. <span class="highlight plagiarized">AI research has been defined as the field of study of intelligent agents</span>, which refers to any system that perceives its environment and takes actions that maximize its chance of achieving its goals.</p>
+                            
+                            <p>The term "artificial intelligence" had previously been used to describe machines that mimic and display "human" cognitive skills that are associated with the human mind, such as "learning" and "problem-solving". <span class="highlight cited">This definition has since been rejected by major AI researchers who now describe AI in terms of rationality and acting rationally</span>, which does not limit how intelligence can be articulated.</p>
+                            
+                            <p>AI applications include advanced web search engines (e.g., Google), recommendation systems (used by YouTube, Amazon and Netflix), understanding human speech (such as Siri and Alexa), self-driving cars (e.g., Tesla), automated decision-making and competing at the highest level in strategic game systems (such as chess and Go).</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="action-buttons" id="actionButtons" style="display: none;">
+                        <button class="btn btn-outline" style="background: transparent; border: 1px solid #ddd; color: #666;">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Check Another Document
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- History Section -->
+            <div class="history-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-history"></i> Recent Checks</h3>
+                </div>
+                
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Research Paper - AI Ethics</h4>
+                            <p>Checked 2 hours ago • 2,458 words</p>
+                        </div>
+                        <div class="history-score score-good">8%</div>
+                    </div>
+                    
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Literature Review - Machine Learning</h4>
+                            <p>Checked 1 day ago • 3,142 words</p>
+                        </div>
+                        <div class="history-score score-warning">24%</div>
+                    </div>
+                    
+                    <div class="history-item">
+                        <div class="history-info">
+                            <h4>Essay - Computer Vision</h4>
+                            <p>Checked 3 days ago • 1,875 words</p>
+                        </div>
+                        <div class="history-score score-good">15%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="course.html">Courses</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseBtn');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const fileRemove = document.getElementById('fileRemove');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const checkPlagiarismBtn = document.getElementById('checkPlagiarismBtn');
+            const analysisProgress = document.getElementById('analysisProgress');
+            const analysisProgressBar = document.getElementById('analysisProgressBar');
+            const sourcesChecked = document.getElementById('sourcesChecked');
+            const wordsProcessed = document.getElementById('wordsProcessed');
+            const resultsOverview = document.getElementById('resultsOverview');
+            const resultsDetails = document.getElementById('resultsDetails');
+            const sourcesList = document.getElementById('sourcesList');
+            const highlightedText = document.getElementById('highlightedText');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            // File Upload Handling
+            browseBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and Drop Handling
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // File Remove
+            fileRemove.addEventListener('click', () => {
+                fileInput.value = '';
+                fileInfo.classList.remove('active');
+                resetResults();
+            });
+            
+            // Check Plagiarism Button
+            checkPlagiarismBtn.addEventListener('click', checkPlagiarism);
+            
+            function handleFileSelect(e) {
+                if (e.target.files.length) {
+                    handleFile(e.target.files[0]);
+                }
+            }
+            
+            function handleFile(file) {
+                // Validate file type
+                const validTypes = ['application/pdf', 'application/msword', 
+                                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                  'text/plain', 'application/rtf'];
+                
+                if (!validTypes.includes(file.type)) {
+                    alert('Please upload a valid document file (PDF, DOC, DOCX, TXT, RTF)');
+                    return;
+                }
+                
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB');
+                    return;
+                }
+                
+                // Display file info
+                fileName.textContent = file.name;
+                fileSize.textContent = `(${formatFileSize(file.size)})`;
+                fileInfo.classList.add('active');
+                
+                // Simulate upload progress
+                simulateUploadProgress();
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            function simulateUploadProgress() {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    uploadProgress.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            }
+            
+            function checkPlagiarism() {
+                if (!fileInput.files.length) {
+                    alert('Please upload a document first');
+                    return;
+                }
+                
+                // Show analysis progress
+                analysisProgress.classList.add('active');
+                resetResults();
+                
+                // Simulate analysis progress
+                simulateAnalysisProgress();
+            }
+            
+            function simulateAnalysisProgress() {
+                let progress = 0;
+                let sources = 0;
+                let words = 0;
+                
+                const interval = setInterval(() => {
+                    progress += 2;
+                    analysisProgressBar.style.width = `${progress}%`;
+                    
+                    // Update stats
+                    sources += Math.floor(Math.random() * 50);
+                    words += Math.floor(Math.random() * 200);
+                    
+                    sourcesChecked.textContent = sources.toLocaleString();
+                    wordsProcessed.textContent = words.toLocaleString();
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        showResults();
+                    }
+                }, 100);
+            }
+            
+            function showResults() {
+                // Hide progress
+                analysisProgress.classList.remove('active');
+                
+                // Show results
+                resultsOverview.style.display = 'block';
+                resultsDetails.style.display = 'block';
+                sourcesList.style.display = 'block';
+                highlightedText.style.display = 'block';
+                actionButtons.style.display = 'flex';
+                
+                // Set random results for demo
+                const similarity = Math.floor(Math.random() * 30);
+                const similarityScore = document.getElementById('similarityScore');
+                const scoreLabel = document.getElementById('scoreLabel');
+                const scoreDescription = document.getElementById('scoreDescription');
+                
+                similarityScore.textContent = `${similarity}%`;
+                
+                if (similarity < 10) {
+                    similarityScore.className = 'similarity-score score-excellent';
+                    scoreLabel.textContent = 'Excellent - Very Original!';
+                    scoreDescription.textContent = 'Your work shows high originality with minimal similarity to existing sources.';
+                } else if (similarity < 20) {
+                    similarityScore.className = 'similarity-score score-good';
+                    scoreLabel.textContent = 'Good - Acceptable Level';
+                    scoreDescription.textContent = 'Your document shows acceptable similarity levels with proper citation practices.';
+                } else if (similarity < 30) {
+                    similarityScore.className = 'similarity-score score-warning';
+                    scoreLabel.textContent = 'Warning - Review Recommended';
+                    scoreDescription.textContent = 'Some sections show significant similarity. Consider reviewing and adding citations.';
+                } else {
+                    similarityScore.className = 'similarity-score score-danger';
+                    scoreLabel.textContent = 'Critical - Immediate Action Needed';
+                    scoreDescription.textContent = 'High similarity detected. Please review and revise your work to ensure originality.';
+                }
+                
+                // Update detail numbers
+                document.getElementById('totalWords').textContent = '1,247';
+                document.getElementById('matchedWords').textContent = Math.floor(1247 * similarity / 100);
+                document.getElementById('sourcesFound').textContent = Math.floor(Math.random() * 10) + 3;
+                document.getElementById('citationCount').textContent = Math.floor(Math.random() * 8) + 1;
+            }
+            
+            function resetResults() {
+                resultsOverview.style.display = 'none';
+                resultsDetails.style.display = 'none';
+                sourcesList.style.display = 'none';
+                highlightedText.style.display = 'none';
+                actionButtons.style.display = 'none';
+                analysisProgress.classList.remove('active');
+                analysisProgressBar.style.width = '0%';
+                sourcesChecked.textContent = '0';
+                wordsProcessed.textContent = '0';
+            }
+            
+            // Highlight tooltips
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                highlight.addEventListener('mouseenter', showHighlightTooltip);
+                highlight.addEventListener('mouseleave', hideHighlightTooltip);
+            });
+            
+            function showHighlightTooltip(e) {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'highlight-tooltip';
+                tooltip.style.position = 'absolute';
+                tooltip.style.background = '#333';
+                tooltip.style.color = 'white';
+                tooltip.style.padding = '5px 10px';
+                tooltip.style.borderRadius = '4px';
+                tooltip.style.fontSize = '12px';
+                tooltip.style.zIndex = '1000';
+                tooltip.textContent = this.classList.contains('plagiarized') 
+                    ? 'Potential plagiarism detected' 
+                    : 'Properly cited content';
+                
+                document.body.appendChild(tooltip);
+                
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = `${rect.left}px`;
+                tooltip.style.top = `${rect.top - 30}px`;
+                
+                this._tooltip = tooltip;
+            }
+            
+            function hideHighlightTooltip() {
+                if (this._tooltip) {
+                    this._tooltip.remove();
+                    this._tooltip = null;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

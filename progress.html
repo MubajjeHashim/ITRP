@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Progress | AI Education System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+            --math: #7209b7;
+            --science: #f72585;
+            --writing: #4cc9f0;
+            --language: #38b000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-header h2 {
+            color: var(--secondary);
+        }
+        
+        .time-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Overview Stats */
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stat-card.math {
+            border-left-color: var(--math);
+        }
+        
+        .stat-card.science {
+            border-left-color: var(--science);
+        }
+        
+        .stat-card.writing {
+            border-left-color: var(--writing);
+        }
+        
+        .stat-card.language {
+            border-left-color: var(--language);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .math .stat-icon {
+            background-color: var(--math);
+        }
+        
+        .science .stat-icon {
+            background-color: var(--science);
+        }
+        
+        .writing .stat-icon {
+            background-color: var(--writing);
+        }
+        
+        .language .stat-icon {
+            background-color: var(--language);
+        }
+        
+        .trend {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .trend.up {
+            color: var(--success);
+        }
+        
+        .trend.down {
+            color: var(--danger);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Progress Charts */
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h3 {
+            color: var(--secondary);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .chart-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chart-header {
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Course Progress */
+        .course-progress {
+            margin-bottom: 2rem;
+        }
+        
+        .course-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .course-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .course-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .course-info {
+            flex: 1;
+        }
+        
+        .course-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .course-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .course-progress-bar {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+        
+        .course-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .course-stats {
+            text-align: right;
+            min-width: 100px;
+        }
+        
+        .course-percentage {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        
+        .course-time {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        /* Achievements */
+        .achievements-section {
+            margin-bottom: 2rem;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .achievement-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+        
+        .achievement-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .achievement-icon.unlocked {
+            background: linear-gradient(135deg, var(--success), #2a9d8f);
+        }
+        
+        .achievement-icon.locked {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .achievement-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .achievement-progress {
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .achievement-progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 2px;
+        }
+        
+        .achievement-stats {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        /* Study Analytics */
+        .analytics-section {
+            margin-bottom: 2rem;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .analytics-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .analytics-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .analytics-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .analytics-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .analytics-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Weak Areas */
+        .weak-areas-section {
+            margin-bottom: 2rem;
+        }
+        
+        .weak-areas-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .weak-area-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        .weak-area-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .weak-area-info {
+            flex: 1;
+        }
+        
+        .weak-area-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .weak-area-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .weak-area-score {
+            text-align: right;
+            min-width: 80px;
+        }
+        
+        .weak-area-percentage {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--danger);
+            margin-bottom: 0.3rem;
+        }
+        
+        .weak-area-action {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .time-filter {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">My Courses</a></li>
+                        <li><a href="quizbots.html">QuizBots</a></li>
+                        <li><a href="grammar.html">Grammar Tools</a></li>
+                        <li><a href="progress" class="active">Progress</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="profile.html" class="btn btn-outline">Profile</a>
+                    <a href="logout.html" class="btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Progress Tracking</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Overview</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Learning Analytics</a></li>
+                        <li><a href="#"><i class="fas fa-award"></i> Achievements</a></li>
+                        <li><a href="#"><i class="fas fa-target"></i> Weak Areas</a></li>
+                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Study Schedule</a></li>
+                        <li><a href="#"><i class="fas fa-download"></i> Export Reports</a></li>
+                    </ul>
+                    
+                    <h3>Subjects</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-calculator"></i> Mathematics</a></li>
+                        <li><a href="#"><i class="fas fa-flask"></i> Science</a></li>
+                        <li><a href="#"><i class="fas fa-language"></i> Languages</a></li>
+                        <li><a href="#"><i class="fas fa-laptop-code"></i> Computer Science</a></li>
+                        <li><a href="#"><i class="fas fa-pen-fancy"></i> Writing</a></li>
+                    </ul>
+                    
+                    <h3>Goals</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-bullseye"></i> Weekly Targets</a></li>
+                        <li><a href="#"><i class="fas fa-flag"></i> Long-term Goals</a></li>
+                        <li><a href="#"><i class="fas fa-trophy"></i> Certifications</a></li>
+                    </ul>
+                </div>
+                
+                <div class="content-area">
+                    <div class="page-header">
+                        <h2>My Learning Progress</h2>
+                        <div class="time-filter">
+                            <button class="filter-btn active">Weekly</button>
+                            <button class="filter-btn">Monthly</button>
+                            <button class="filter-btn">All Time</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Overview Stats -->
+                    <div class="overview-stats">
+                        <div class="stat-card math">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="trend up">
+                                    <i class="fas fa-arrow-up"></i> 12%
+                                </div>
+                            </div>
+                            <div class="stat-value">78%</div>
+                            <div class="stat-label">Mathematics Mastery</div>
+                        </div>
+                        
+                        <div class="stat-card science">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="trend up">
+                                    <i class="fas fa-arrow-up"></i> 8%
+                                </div>
+                            </div>
+                            <div class="stat-value">65%</div>
+                            <div class="stat-label">Science Understanding</div>
+                        </div>
+                        
+                        <div class="stat-card writing">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <div class="trend up">
+                                    <i class="fas fa-arrow-up"></i> 15%
+                                </div>
+                            </div>
+                            <div class="stat-value">82%</div>
+                            <div class="stat-label">Writing Skills</div>
+                        </div>
+                        
+                        <div class="stat-card language">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="trend down">
+                                    <i class="fas fa-arrow-down"></i> 3%
+                                </div>
+                            </div>
+                            <div class="stat-value">58%</div>
+                            <div class="stat-label">Language Proficiency</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Charts -->
+                    <div class="progress-section">
+                        <div class="section-header">
+                            <h3>Learning Progress Over Time</h3>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-download"></i> Export Data
+                            </a>
+                        </div>
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h4>Subject Performance Trend</h4>
+                                </div>
+                                <div class="chart-container" id="performanceChart">
+                                    <!-- Chart will be rendered here -->
+                                    <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 100%; padding: 1rem;">
+                                        <div style="display: flex; flex-direction: column; align-items: center;">
+                                            <div style="width: 30px; background: linear-gradient(to top, var(--math), #7209b7); height: 80%; border-radius: 4px 4px 0 0;"></div>
+                                            <span style="margin-top: 0.5rem; font-size: 0.8rem;">Math</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: center;">
+                                            <div style="width: 30px; background: linear-gradient(to top, var(--science), #f72585); height: 65%; border-radius: 4px 4px 0 0;"></div>
+                                            <span style="margin-top: 0.5rem; font-size: 0.8rem;">Science</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: center;">
+                                            <div style="width: 30px; background: linear-gradient(to top, var(--writing), #4cc9f0); height: 82%; border-radius: 4px 4px 0 0;"></div>
+                                            <span style="margin-top: 0.5rem; font-size: 0.8rem;">Writing</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: center;">
+                                            <div style="width: 30px; background: linear-gradient(to top, var(--language), #38b000); height: 58%; border-radius: 4px 4px 0 0;"></div>
+                                            <span style="margin-top: 0.5rem; font-size: 0.8rem;">Language</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h4>Study Time Distribution</h4>
+                                </div>
+                                <div class="chart-container" id="timeChart">
+                                    <!-- Pie chart representation -->
+                                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                                        <div style="width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(
+                                            var(--math) 0% 35%,
+                                            var(--science) 35% 60%,
+                                            var(--writing) 60% 80%,
+                                            var(--language) 80% 100%
+                                        ); margin-bottom: 1rem;"></div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; width: 100%;">
+                                            <div style="display: flex; align-items: center;">
+                                                <div style="width: 12px; height: 12px; background-color: var(--math); margin-right: 0.5rem; border-radius: 2px;"></div>
+                                                <span style="font-size: 0.8rem;">Math: 35%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <div style="width: 12px; height: 12px; background-color: var(--science); margin-right: 0.5rem; border-radius: 2px;"></div>
+                                                <span style="font-size: 0.8rem;">Science: 25%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <div style="width: 12px; height: 12px; background-color: var(--writing); margin-right: 0.5rem; border-radius: 2px;"></div>
+                                                <span style="font-size: 0.8rem;">Writing: 20%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <div style="width: 12px; height: 12px; background-color: var(--language); margin-right: 0.5rem; border-radius: 2px;"></div>
+                                                <span style="font-size: 0.8rem;">Language: 20%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Progress -->
+                    <div class="course-progress">
+                        <div class="section-header">
+                            <h3>Course Progress</h3>
+                            <a href="add-course.html" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Course
+                            </a>
+                        </div>
+                        <div class="course-list">
+                            <div class="course-item">
+                                <div class="course-icon" style="background-color: var(--math);">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Advanced Mathematics</h4>
+                                    <p>Master calculus, algebra, and advanced mathematical concepts</p>
+                                    <div class="course-progress-bar">
+                                        <div class="course-progress-fill" style="width: 65%; background-color: var(--math);"></div>
+                                    </div>
+                                </div>
+                                <div class="course-stats">
+                                    <div class="course-percentage">65%</div>
+                                    <div class="course-time">12/20 lessons</div>
+                                </div>
+                            </div>
+                            
+                            <div class="course-item">
+                                <div class="course-icon" style="background-color: var(--science);">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Chemistry Fundamentals</h4>
+                                    <p>Explore the building blocks of matter and chemical reactions</p>
+                                    <div class="course-progress-bar">
+                                        <div class="course-progress-fill" style="width: 30%; background-color: var(--science);"></div>
+                                    </div>
+                                </div>
+                                <div class="course-stats">
+                                    <div class="course-percentage">30%</div>
+                                    <div class="course-time">6/18 lessons</div>
+                                </div>
+                            </div>
+                            
+                            <div class="course-item">
+                                <div class="course-icon" style="background-color: var(--writing);">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Academic Writing</h4>
+                                    <p>Master the art of academic writing and proper citation</p>
+                                    <div class="course-progress-bar">
+                                        <div class="course-progress-fill" style="width: 100%; background-color: var(--writing);"></div>
+                                    </div>
+                                </div>
+                                <div class="course-stats">
+                                    <div class="course-percentage">100%</div>
+                                    <div class="course-time">Completed</div>
+                                </div>
+                            </div>
+                            
+                            <div class="course-item">
+                                <div class="course-icon" style="background-color: var(--language);">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Spanish for Beginners</h4>
+                                    <p>Learn basic Spanish vocabulary and conversation skills</p>
+                                    <div class="course-progress-bar">
+                                        <div class="course-progress-fill" style="width: 45%; background-color: var(--language);"></div>
+                                    </div>
+                                </div>
+                                <div class="course-stats">
+                                    <div class="course-percentage">45%</div>
+                                    <div class="course-time">9/20 lessons</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Achievements -->
+                    <div class="achievements-section">
+                        <div class="section-header">
+                            <h3>Achievements & Badges</h3>
+                            <a href="view.html" class="btn btn-primary">
+                                <i class="fas fa-trophy"></i> View All
+                            </a>
+                        </div>
+                        <div class="achievements-grid">
+                            <div class="achievement-card">
+                                <div class="achievement-icon unlocked">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="achievement-title">Rapid Learner</div>
+                                <div class="achievement-desc">Complete 5 courses in one month</div>
+                                <div class="achievement-progress">
+                                    <div class="achievement-progress-fill" style="width: 100%;"></div>
+                                </div>
+                                <div class="achievement-stats">Unlocked: 2 days ago</div>
+                            </div>
+                            
+                            <div class="achievement-card">
+                                <div class="achievement-icon unlocked">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="achievement-title">Quiz Master</div>
+                                <div class="achievement-desc">Score 90% or higher on 10 quizzes</div>
+                                <div class="achievement-progress">
+                                    <div class="achievement-progress-fill" style="width: 80%;"></div>
+                                </div>
+                                <div class="achievement-stats">8/10 completed</div>
+                            </div>
+                            
+                            <div class="achievement-card">
+                                <div class="achievement-icon unlocked">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="achievement-title">Study Streak</div>
+                                <div class="achievement-desc">Study for 7 consecutive days</div>
+                                <div class="achievement-progress">
+                                    <div class="achievement-progress-fill" style="width: 100%;"></div>
+                                </div>
+                                <div class="achievement-stats">Current streak: 12 days</div>
+                            </div>
+                            
+                            <div class="achievement-card locked">
+                                <div class="achievement-icon locked">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="achievement-title">Grammar Guru</div>
+                                <div class="achievement-desc">Fix 100 grammar errors using AI tools</div>
+                                <div class="achievement-progress">
+                                    <div class="achievement-progress-fill" style="width: 65%;"></div>
+                                </div>
+                                <div class="achievement-stats">65/100 completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Study Analytics -->
+                    <div class="analytics-section">
+                        <div class="section-header">
+                            <h3>Study Analytics</h3>
+                        </div>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <div class="analytics-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <div class="analytics-value">12.5 hrs</div>
+                                        <div class="analytics-label">Study Time This Week</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <div class="analytics-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="analytics-value">24</div>
+                                        <div class="analytics-label">Quizzes Completed</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <div class="analytics-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="analytics-value">78%</div>
+                                        <div class="analytics-label">Average Quiz Score</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <div class="analytics-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div>
+                                        <div class="analytics-value">5/7</div>
+                                        <div class="analytics-label">Active Study Days</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weak Areas -->
+                    <div class="weak-areas-section">
+                        <div class="section-header">
+                            <h3>Areas Needing Improvement</h3>
+                            <a href="help.html" class="btn btn-primary">
+                                <i class="fas fa-lightbulb"></i> Get Help
+                            </a>
+                        </div>
+                        <div class="weak-areas-list">
+                            <div class="weak-area-item">
+                                <div class="weak-area-icon" style="background-color: var(--language);">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="weak-area-info">
+                                    <h4>Verb Conjugation</h4>
+                                    <p>Spanish language - irregular verbs</p>
+                                </div>
+                                <div class="weak-area-score">
+                                    <div class="weak-area-percentage">42%</div>
+                                    <div class="weak-area-action">Practice Now</div>
+                                </div>
+                            </div>
+                            
+                            <div class="weak-area-item">
+                                <div class="weak-area-icon" style="background-color: var(--math);">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="weak-area-info">
+                                    <h4>Quadratic Equations</h4>
+                                    <p>Mathematics - solving complex equations</p>
+                                </div>
+                                <div class="weak-area-score">
+                                    <div class="weak-area-percentage">55%</div>
+                                    <div class="weak-area-action">Review Concepts</div>
+                                </div>
+                            </div>
+                            
+                            <div class="weak-area-item">
+                                <div class="weak-area-icon" style="background-color: var(--science);">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="weak-area-info">
+                                    <h4>Chemical Bonding</h4>
+                                    <p>Chemistry - ionic and covalent bonds</p>
+                                </div>
+                                <div class="weak-area-score">
+                                    <div class="weak-area-percentage">48%</div>
+                                    <div class="weak-area-action">Watch Tutorial</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="course.html">Courses</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Time filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real app, this would update the data based on the selected time range
+                    updateProgressData(this.textContent);
+                });
+            });
+            
+            // Course progress animation
+            const progressBars = document.querySelectorAll('.course-progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+            
+            // Achievement progress animation
+            const achievementBars = document.querySelectorAll('.achievement-progress-fill');
+            achievementBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 800);
+            });
+            
+            // Simulate data update based on time filter
+            function updateProgressData(timeRange) {
+                console.log(`Updating progress data for: ${timeRange}`);
+                // In a real application, this would fetch new data from an API
+                // and update the charts and statistics
+            }
+            
+            // Initialize with weekly data
+            updateProgressData('Weekly');
+        });
+    </script>
+</body>
+</html>

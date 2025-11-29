@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | AI Education System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+            --math: #7209b7;
+            --science: #f72585;
+            --writing: #4cc9f0;
+            --language: #38b000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-header h2 {
+            color: var(--secondary);
+        }
+        
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-right: 2rem;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-info h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .profile-stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Profile Content */
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h3 {
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-header h3 i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .info-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .info-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .info-value {
+            color: var(--dark);
+        }
+        
+        .info-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Progress Overview */
+        .progress-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .progress-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .math .progress-icon {
+            background-color: var(--math);
+        }
+        
+        .science .progress-icon {
+            background-color: var(--science);
+        }
+        
+        .writing .progress-icon {
+            background-color: var(--writing);
+        }
+        
+        .language .progress-icon {
+            background-color: var(--language);
+        }
+        
+        .progress-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .progress-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Recent Activity */
+        .activity-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .activity-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .activity-math {
+            background-color: var(--math);
+        }
+        
+        .activity-science {
+            background-color: var(--science);
+        }
+        
+        .activity-writing {
+            background-color: var(--writing);
+        }
+        
+        .activity-language {
+            background-color: var(--language);
+        }
+        
+        .activity-details {
+            flex: 1;
+        }
+        
+        .activity-details h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .activity-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+        }
+        
+        /* Settings Form */
+        .settings-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .form-select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .form-textarea {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        /* Notifications */
+        .notification-settings {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        .notification-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .notification-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .progress-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="courses.html">My Courses</a></li>
+                        <li><a href="quizbots.html">QuizBots</a></li>
+                        <li><a href="grammar-tools.html">Grammar Tools</a></li>
+                        <li><a href="progress.html">Progress</a></li>
+                        <li><a href="schedule.html">Schedule</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="logout.html" class="btn btn-outline">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Profile Navigation</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-user"></i> Personal Info</a></li>
+                        <li><a href="#"><i class="fas fa-cog"></i> Account Settings</a></li>
+                        <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy & Security</a></li>
+                        <li><a href="#"><i class="fas fa-palette"></i> Appearance</a></li>
+                        <li><a href="#"><i class="fas fa-download"></i> Data & Export</a></li>
+                    </ul>
+                    
+                    <h3>Quick Actions</h3>
+                    <ul>
+                        <li><a href="edit-profile.html"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                        <li><a href="#"><i class="fas fa-key"></i> Change Password</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+                        <li><a href="#"><i class="fas fa-share-alt"></i> Share Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="content-area">
+                    <div class="page-header">
+                        <h2>My Profile</h2>
+                        <a href="edit-profile.html" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                    </div>
+                    
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h1>Sarah Johnson</h1>
+                            <p>Computer Science Student | AI Education Enthusiast</p>
+                            <div class="profile-stats">
+                                <div class="profile-stat">
+                                    <span class="stat-value">24</span>
+                                    <span class="stat-label">Courses</span>
+                                </div>
+                                <div class="profile-stat">
+                                    <span class="stat-value">78%</span>
+                                    <span class="stat-label">Avg. Score</span>
+                                </div>
+                                <div class="profile-stat">
+                                    <span class="stat-value">142</span>
+                                    <span class="stat-label">Quizzes</span>
+                                </div>
+                                <div class="profile-stat">
+                                    <span class="stat-value">15</span>
+                                    <span class="stat-label">Achievements</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <!-- Left Column -->
+                        <div class="profile-column">
+                            <!-- Personal Information -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <span class="info-label">Full Name</span>
+                                            <span class="info-value">Sarah Johnson</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Email</span>
+                                            <span class="info-value">sarah.johnson@edusystem.com</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Phone</span>
+                                            <span class="info-value">+1 (555) 123-4567</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Location</span>
+                                            <span class="info-value">San Francisco, CA</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Member Since</span>
+                                            <span class="info-value">January 2023</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Academic Information -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-graduation-cap"></i> Academic Information</h3>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <span class="info-label">Education Level</span>
+                                            <span class="info-value">Undergraduate</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Field of Study</span>
+                                            <span class="info-value">Computer Science</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Institution</span>
+                                            <span class="info-value">Stanford University</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Expected Graduation</span>
+                                            <span class="info-value">May 2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Overview -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-chart-line"></i> Learning Progress</h3>
+                                </div>
+                                <div class="progress-overview">
+                                    <div class="progress-card math">
+                                        <div class="progress-icon">
+                                            <i class="fas fa-calculator"></i>
+                                        </div>
+                                        <div class="progress-value">78%</div>
+                                        <div class="progress-label">Mathematics</div>
+                                    </div>
+                                    <div class="progress-card science">
+                                        <div class="progress-icon">
+                                            <i class="fas fa-flask"></i>
+                                        </div>
+                                        <div class="progress-value">65%</div>
+                                        <div class="progress-label">Science</div>
+                                    </div>
+                                    <div class="progress-card writing">
+                                        <div class="progress-icon">
+                                            <i class="fas fa-pen-fancy"></i>
+                                        </div>
+                                        <div class="progress-value">82%</div>
+                                        <div class="progress-label">Writing</div>
+                                    </div>
+                                    <div class="progress-card language">
+                                        <div class="progress-icon">
+                                            <i class="fas fa-language"></i>
+                                        </div>
+                                        <div class="progress-value">58%</div>
+                                        <div class="progress-label">Languages</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="profile-column">
+                            <!-- Account Settings -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-cog"></i> Account Settings</h3>
+                                </div>
+                                <div class="info-card">
+                                    <form class="settings-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">Language</label>
+                                                <select class="form-select">
+                                                    <option>English</option>
+                                                    <option>Spanish</option>
+                                                    <option>French</option>
+                                                    <option>German</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Time Zone</label>
+                                                <select class="form-select">
+                                                    <option>Pacific Time (PT)</option>
+                                                    <option>Eastern Time (ET)</option>
+                                                    <option>Central Time (CT)</option>
+                                                    <option>Mountain Time (MT)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Bio</label>
+                                            <textarea class="form-textarea" placeholder="Tell us about yourself...">Passionate computer science student with interest in AI and machine learning. Currently focusing on improving my writing skills and learning Spanish.</textarea>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-outline">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <!-- Notification Settings -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-bell"></i> Notification Preferences</h3>
+                                </div>
+                                <div class="info-card">
+                                    <div class="notification-settings">
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <h4>Course Updates</h4>
+                                                <p>Get notified about new course content and updates</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <h4>Assignment Reminders</h4>
+                                                <p>Receive reminders for upcoming assignments</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <h4>Quiz Results</h4>
+                                                <p>Get notifications when quiz results are available</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <h4>Weekly Progress Reports</h4>
+                                                <p>Receive weekly summaries of your learning progress</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Activity -->
+                            <div class="profile-section">
+                                <div class="section-header">
+                                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                                    <a href="#" class="btn btn-outline">View All</a>
+                                </div>
+                                <div class="activity-list">
+                                    <div class="activity-item">
+                                        <div class="activity-icon activity-math">
+                                            <i class="fas fa-calculator"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <h4>Completed Calculus Quiz</h4>
+                                            <p>Scored 85% on Advanced Derivatives</p>
+                                            <div class="activity-time">2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon activity-writing">
+                                            <i class="fas fa-pen-fancy"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <h4>Used Grammar Tools</h4>
+                                            <p>Checked essay with AI writing assistant</p>
+                                            <div class="activity-time">5 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon activity-language">
+                                            <i class="fas fa-language"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <h4>Spanish Vocabulary Practice</h4>
+                                            <p>Learned 15 new words</p>
+                                            <div class="activity-time">1 day ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon activity-science">
+                                            <i class="fas fa-flask"></i>
+                                        </div>
+                                        <div class="activity-details">
+                                            <h4>Chemistry Lab Completed</h4>
+                                            <p>Submitted lab report on chemical reactions</p>
+                                            <div class="activity-time">2 days ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="course.html">Courses</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle switches functionality
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(switchElement => {
+                switchElement.addEventListener('change', function() {
+                    const label = this.nextElementSibling;
+                    if (this.checked) {
+                        console.log(`Notification enabled: ${this.closest('.notification-item').querySelector('h4').textContent}`);
+                    } else {
+                        console.log(`Notification disabled: ${this.closest('.notification-item').querySelector('h4').textContent}`);
+                    }
+                });
+            });
+            
+            // Form submission
+            const settingsForm = document.querySelector('.settings-form');
+            settingsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Profile settings updated successfully!');
+            });
+            
+            // Edit profile button
+            const editProfileBtn = document.querySelector('.page-header .btn');
+            editProfileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // In a real app, this would open an edit modal or switch to edit mode
+                alert('Edit profile feature would open here');
+            });
+        });
+    </script>
+</body>
+</html>

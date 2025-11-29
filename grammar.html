@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Tools | AI Education System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+            --math: #7209b7;
+            --science: #f72585;
+            --writing: #4cc9f0;
+            --language: #38b000;
+            --correct: #4bb543;
+            --incorrect: #ff3333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-success {
+            background-color: var(--correct);
+        }
+        
+        .btn-writing {
+            background-color: var(--writing);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-header h2 {
+            color: var(--secondary);
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Grammar Tools Section */
+        .grammar-tools-section {
+            margin-bottom: 2rem;
+        }
+        
+        .grammar-tools-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .grammar-container {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .grammar-header {
+            background-color: var(--writing);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .grammar-header h3 {
+            margin-left: 10px;
+            color: white;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .grammar-modes {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .mode-btn {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .mode-btn.active {
+            background-color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+        
+        .grammar-input-area {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-section h4, .output-section h4 {
+            color: var(--secondary);
+        }
+        
+        textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+        
+        .output-text {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+        
+        .grammar-controls {
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .grammar-stats {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .stat {
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .stat strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .suggestion {
+            background-color: #d1ecf1;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+            border-bottom: 1px dashed #0c5460;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+            border-bottom: 1px dashed #721c24;
+        }
+        
+        .improvement {
+            background-color: #d4edda;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+            border-bottom: 1px dashed #155724;
+        }
+        
+        /* Writing Analysis Section */
+        .writing-analysis {
+            margin-top: 2rem;
+        }
+        
+        .analysis-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .analysis-content {
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .analysis-card {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--writing);
+        }
+        
+        .analysis-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .analysis-card h4 i {
+            margin-right: 0.5rem;
+        }
+        
+        .analysis-card p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .analysis-card .description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .suggestions-list {
+            margin-top: 1rem;
+        }
+        
+        .suggestion-item {
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .suggestion-text {
+            flex: 1;
+        }
+        
+        .suggestion-text h5 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .suggestion-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* AI Writing Assistant */
+        .ai-writing-assistant {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        
+        .assistant-header {
+            background-color: var(--warning);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .assistant-header h3 {
+            margin-left: 10px;
+        }
+        
+        .assistant-content {
+            padding: 1.5rem;
+        }
+        
+        .assistant-message {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .assistant-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .assistant-btn {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .assistant-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        .assistant-btn:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Sample Texts */
+        .sample-texts {
+            margin-top: 2rem;
+        }
+        
+        .samples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .sample-card {
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .sample-card:hover {
+            background-color: #f8f9fa;
+            border-color: var(--writing);
+        }
+        
+        .sample-card h5 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .sample-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .grammar-input-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .grammar-controls {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .grammar-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .assistant-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="my-courses.html">My Courses</a></li>
+                        <li><a href="quickbots.html">QuickBots</a></li>
+                        <li><a href="quizbots.html">QuizBots</a></li>
+                        <li><a href="#" class="active">Grammar Tools</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#" class="btn">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Writing Tools</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-spell-check"></i> Grammar Checker</a></li>
+                        <li><a href="#"><i class="fas fa-book-open"></i> Plagiarism Check</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i> Essay Grader</a></li>
+                        <li><a href="#"><i class="fas fa-theater-masks"></i> Paraphrasing Tool</a></li>
+                        <li><a href="#"><i class="fas fa-pencil-alt"></i> Writing Assistant</a></li>
+                        <li><a href="#"><i class="fas fa-clipboard-list"></i> Citation Generator</a></li>
+                    </ul>
+                    
+                    <h3>Document Types</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-graduation-cap"></i> Academic Papers</a></li>
+                        <li><a href="#"><i class="fas fa-briefcase"></i> Business Writing</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> Emails & Letters</a></li>
+                        <li><a href="#"><i class="fas fa-file-contract"></i> Creative Writing</a></li>
+                        <li><a href="#"><i class="fas fa-newspaper"></i> Blog Posts</a></li>
+                    </ul>
+                    
+                    <h3>My Documents</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-history"></i> Recent Documents</a></li>
+                        <li><a href="#"><i class="fas fa-save"></i> Saved Analyses</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Writing Progress</a></li>
+                        <li><a href="#"><i class="fas fa-star"></i> Favorite Templates</a></li>
+                    </ul>
+                </div>
+                
+                <div class="content-area">
+                    <div class="page-header">
+                        <h2>Grammar Tools & Writing Assistant</h2>
+                        <a href="#" class="btn btn-writing">
+                            <i class="fas fa-file-export"></i> Export Analysis
+                        </a>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <h3>24</h3>
+                            <p>Documents Checked</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>87%</h3>
+                            <p>Grammar Score</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>142</h3>
+                            <p>Errors Fixed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>15</h3>
+                            <p>Writing Goals Met</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Grammar Tools Section -->
+                    <div class="grammar-tools-section">
+                        <div class="grammar-container">
+                            <div class="grammar-header">
+                                <h3>
+                                    <i class="fas fa-spell-check"></i>
+                                    Advanced Grammar Checker
+                                </h3>
+                                <div class="grammar-modes">
+                                    <button class="mode-btn active" data-mode="grammar">Grammar</button>
+                                    <button class="mode-btn" data-mode="spelling">Spelling</button>
+                                    <button class="mode-btn" data-mode="style">Style</button>
+                                    <button class="mode-btn" data-mode="plagiarism">Plagiarism</button>
+                                </div>
+                            </div>
+                            <div class="grammar-input-area">
+                                <div class="input-section">
+                                    <div class="section-header">
+                                        <h4>Your Text</h4>
+                                        <div>
+                                            <button class="btn btn-outline" id="clearText">
+                                                <i class="fas fa-broom"></i> Clear
+                                            </button>
+                                            <button class="btn btn-outline" id="pasteText">
+                                                <i class="fas fa-paste"></i> Paste
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <textarea id="grammarInput" placeholder="Type or paste your text here for analysis...">The students was happy to recieve there grades. They done well on there exams and are excited for the next semester. Each of the students have improved significantly. The teacher, who's class they enjoyed, gave them positive feedback. Its clear that hard work pays off in the end.</textarea>
+                                </div>
+                                <div class="output-section">
+                                    <div class="section-header">
+                                        <h4>Corrected Text</h4>
+                                        <div>
+                                            <button class="btn btn-outline" id="copyText">
+                                                <i class="fas fa-copy"></i> Copy
+                                            </button>
+                                            <button class="btn btn-writing" id="applyChanges">
+                                                <i class="fas fa-check"></i> Apply
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="output-text" id="grammarOutput">
+                                        <!-- Corrected text will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grammar-controls">
+                                <div class="grammar-stats">
+                                    <div class="stat">
+                                        <strong id="wordCount">0</strong>
+                                        <span>words</span>
+                                    </div>
+                                    <div class="stat">
+                                        <strong id="characterCount">0</strong>
+                                        <span>characters</span>
+                                    </div>
+                                    <div class="stat">
+                                        <strong id="issueCount">0</strong>
+                                        <span>issues</span>
+                                    </div>
+                                    <div class="stat">
+                                        <strong id="readabilityScore">0</strong>
+                                        <span>readability</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" id="checkGrammar">
+                                    <i class="fas fa-search"></i> Analyze Text
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Writing Analysis Section -->
+                    <div class="writing-analysis">
+                        <div class="analysis-header">
+                            <h3><i class="fas fa-chart-bar"></i> Writing Analysis</h3>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="analysis-grid">
+                                <div class="analysis-card">
+                                    <h4><i class="fas fa-ruler-combined"></i> Readability</h4>
+                                    <p id="readabilityScoreCard">0/100</p>
+                                    <div class="description">How easy your text is to understand</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <h4><i class="fas fa-tachometer-alt"></i> Vocabulary Level</h4>
+                                    <p id="vocabularyScore">Intermediate</p>
+                                    <div class="description">Complexity of words used</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <h4><i class="fas fa-sentence"></i> Sentence Variety</h4>
+                                    <p id="sentenceVariety">Good</p>
+                                    <div class="description">Mix of sentence structures</div>
+                                </div>
+                                <div class="analysis-card">
+                                    <h4><i class="fas fa-bullseye"></i> Clarity Score</h4>
+                                    <p id="clarityScore">0/100</p>
+                                    <div class="description">How clear your writing is</div>
+                                </div>
+                            </div>
+                            
+                            <h4>Improvement Suggestions</h4>
+                            <div class="suggestions-list" id="suggestionsList">
+                                <!-- Suggestions will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Writing Assistant -->
+                    <div class="ai-writing-assistant">
+                        <div class="assistant-header">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI Writing Coach</h3>
+                        </div>
+                        <div class="assistant-content">
+                            <div class="assistant-message" id="assistantMessage">
+                                I can help improve your writing! Try one of the options below to get personalized feedback and suggestions.
+                            </div>
+                            <div class="assistant-actions">
+                                <button class="assistant-btn" onclick="improveTone()">
+                                    <i class="fas fa-palette"></i> Improve Tone
+                                </button>
+                                <button class="assistant-btn" onclick="makeConcise()">
+                                    <i class="fas fa-compress-alt"></i> Make Concise
+                                </button>
+                                <button class="assistant-btn" onclick="enhanceVocabulary()">
+                                    <i class="fas fa-book"></i> Enhance Vocabulary
+                                </button>
+                                <button class="assistant-btn" onclick="checkFormality()">
+                                    <i class="fas fa-user-tie"></i> Check Formality
+                                </button>
+                                <button class="assistant-btn" onclick="rephraseSentences()">
+                                    <i class="fas fa-sync-alt"></i> Rephrase Sentences
+                                </button>
+                                <button class="assistant-btn" onclick="expandIdeas()">
+                                    <i class="fas fa-expand-alt"></i> Expand Ideas
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample Texts -->
+                    <div class="sample-texts">
+                        <h4>Try These Sample Texts</h4>
+                        <div class="samples-grid">
+                            <div class="sample-card" onclick="loadSample('academic')">
+                                <h5>Academic Essay</h5>
+                                <p>Sample introduction paragraph with common errors</p>
+                            </div>
+                            <div class="sample-card" onclick="loadSample('business')">
+                                <h5>Business Email</h5>
+                                <p>Professional communication with style issues</p>
+                            </div>
+                            <div class="sample-card" onclick="loadSample('creative')">
+                                <h5>Creative Writing</h5>
+                                <p>Short story excerpt for narrative analysis</p>
+                            </div>
+                            <div class="sample-card" onclick="loadSample('technical')">
+                                <h5>Technical Report</h5>
+                                <p>Complex information with clarity challenges</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample texts for demonstration
+        const sampleTexts = {
+            academic: "The impact of climate change on biodiversity is a topic of significant concern amongst scientists. There is alot of evidence that suggests that ecosystems are being effected by rising temperatures. This phenomena is causing species to migrate to different habitats or face extinction. Its clear that immediate action is required to address these issues.",
+            business: "I am writing to express my interest in the Marketing Manager position that was advertised on your website. I believe that my skills and experience makes me a strong candidate for this role. I have previously worked in similar positions and have a proven track record of success. I am confident that I can contribute to your companies growth and success.",
+            creative: "The old house stood their at the end of the lane, it's windows dark and empty. She remembered playing their as a child, when the house was filled with laughter and light. Now it just sat they're, silent and foreboding. She new she had to go inside, but her feet felt like lead.",
+            technical: "The implementation of the new algorithm resulted in a significant improvement in processing speed. However, there are several factors that effects its performance in different environments. The team are currently working on optimizing these parameters to ensure consistent results across all platforms. Its important to note that these changes may effect compatibility with older systems."
+        };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            checkGrammar(); // Run initial check on sample text
+            
+            // Add event listeners
+            document.getElementById('checkGrammar').addEventListener('click', checkGrammar);
+            document.getElementById('clearText').addEventListener('click', clearText);
+            document.getElementById('pasteText').addEventListener('click', pasteText);
+            document.getElementById('copyText').addEventListener('click', copyText);
+            document.getElementById('applyChanges').addEventListener('click', applyChanges);
+            document.getElementById('grammarInput').addEventListener('input', updateStats);
+            
+            // Mode switching
+            const modeButtons = document.querySelectorAll('.mode-btn');
+            modeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    modeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    checkGrammar(); // Re-check with new mode
+                });
+            });
+        });
+
+        // Update text statistics
+        function updateStats() {
+            const text = document.getElementById('grammarInput').value;
+            const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const characterCount = text.length;
+            
+            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('characterCount').textContent = characterCount;
+        }
+
+        // Main grammar checking function
+        function checkGrammar() {
+            const inputText = document.getElementById('grammarInput').value;
+            const outputElement = document.getElementById('grammarOutput');
+            
+            if (!inputText.trim()) {
+                outputElement.innerHTML = "Please enter some text to check.";
+                updateAnalysis(0, 0, []);
+                return;
+            }
+            
+            // Common grammar corrections with explanations
+            const corrections = [
+                { pattern: /\bwas\b/g, replacement: 'were', type: 'verb', explanation: 'Subject-verb agreement: Use "were" with plural subjects' },
+                { pattern: /\brecieve\b/g, replacement: 'receive', type: 'spelling', explanation: 'Spelling: "i before e except after c"' },
+                { pattern: /\bthere\b/g, replacement: 'their', type: 'word', explanation: 'Word choice: "their" indicates possession' },
+                { pattern: /\bdone\b/g, replacement: 'did', type: 'verb', explanation: 'Verb tense: Use "did" for simple past tense' },
+                { pattern: /\bhave\b/g, replacement: 'has', type: 'verb', explanation: 'Subject-verb agreement: Use "has" with singular subjects' },
+                { pattern: /\bwho's\b/g, replacement: 'whose', type: 'word', explanation: 'Word choice: "whose" indicates possession, "who\'s" means "who is"' },
+                { pattern: /\bIts\b/g, replacement: 'It\'s', type: 'punctuation', explanation: 'Punctuation: "It\'s" is a contraction for "it is"' },
+                { pattern: /\balot\b/g, replacement: 'a lot', type: 'spelling', explanation: 'Spelling: "a lot" is two words' },
+                { pattern: /\beffected\b/g, replacement: 'affected', type: 'word', explanation: 'Word choice: "affect" is usually a verb, "effect" is usually a noun' },
+                { pattern: /\bphenomena\b/g, replacement: 'phenomenon', type: 'word', explanation: 'Word form: "phenomenon" is singular, "phenomena" is plural' },
+                { pattern: /\bmakes\b/g, replacement: 'make', type: 'verb', explanation: 'Subject-verb agreement: Use "make" with plural subjects' },
+                { pattern: /\bcompanies\b/g, replacement: 'company\'s', type: 'word', explanation: 'Word form: Use possessive form for belonging' },
+                { pattern: /\btheir\b/g, replacement: 'there', type: 'word', explanation: 'Word choice: "there" indicates location' },
+                { pattern: /\bit's\b/g, replacement: 'its', type: 'word', explanation: 'Word choice: "its" indicates possession, "it\'s" means "it is"' },
+                { pattern: /\bthey're\b/g, replacement: 'there', type: 'word', explanation: 'Word choice: "there" indicates location, "they\'re" means "they are"' },
+                { pattern: /\bnew\b/g, replacement: 'knew', type: 'spelling', explanation: 'Spelling: "knew" is the past tense of "know"' },
+                { pattern: /\bare\b/g, replacement: 'is', type: 'verb', explanation: 'Subject-verb agreement: Use "is" with singular subjects' }
+            ];
+            
+            let correctedText = inputText;
+            let issueCount = 0;
+            let issues = [];
+            
+            // Apply corrections and track issues
+            corrections.forEach(correction => {
+                const matches = correctedText.match(correction.pattern);
+                if (matches) {
+                    issueCount += matches.length;
+                    correctedText = correctedText.replace(correction.pattern, 
+                        `<span class="suggestion" title="${correction.explanation}">${correction.replacement}</span>`);
+                    
+                    issues.push({
+                        type: correction.type,
+                        count: matches.length,
+                        explanation: correction.explanation
+                    });
+                }
+            });
+            
+            // Add highlighting for improvements
+            correctedText = correctedText.replace(/\b(happy|excited|improved|positive|clear|pays off)\b/g, 
+                '<span class="improvement" title="Strong word choice">$1</span>');
+            
+            outputElement.innerHTML = correctedText;
+            document.getElementById('issueCount').textContent = issueCount;
+            
+            // Update writing analysis
+            const wordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
+            const sentenceCount = (inputText.match(/[.!?]+/g) || []).length;
+            const avgSentenceLength = sentenceCount > 0 ? wordCount / sentenceCount : 0;
+            
+            // Calculate readability score (simplified)
+            const readability = Math.max(10, Math.min(100, 100 - (avgSentenceLength * 2) + (wordCount / 10)));
+            const clarity = Math.max(30, Math.min(100, readability - (issueCount * 5)));
+            
+            updateAnalysis(readability, clarity, issues);
+        }
+
+        // Update writing analysis section
+        function updateAnalysis(readability, clarity, issues) {
+            // Update scores
+            document.getElementById('readabilityScore').textContent = Math.round(readability);
+            document.getElementById('readabilityScoreCard').textContent = Math.round(readability) + '/100';
+            document.getElementById('clarityScore').textContent = Math.round(clarity) + '/100';
+            
+            // Update vocabulary level based on word complexity (simplified)
+            const vocabLevel = readability > 70 ? 'Advanced' : readability > 50 ? 'Intermediate' : 'Basic';
+            document.getElementById('vocabularyScore').textContent = vocabLevel;
+            
+            // Update sentence variety (simplified)
+            const sentenceVariety = readability > 60 ? 'Good' : readability > 40 ? 'Average' : 'Needs Improvement';
+            document.getElementById('sentenceVariety').textContent = sentenceVariety;
+            
+            // Generate suggestions
+            const suggestionsList = document.getElementById('suggestionsList');
+            suggestionsList.innerHTML = '';
+            
+            const suggestions = [
+                { 
+                    title: 'Improve Sentence Structure', 
+                    description: 'Vary your sentence lengths to make your writing more engaging.',
+                    priority: 'medium'
+                },
+                { 
+                    title: 'Strengthen Word Choice', 
+                    description: 'Replace weak verbs and adjectives with more powerful alternatives.',
+                    priority: 'low'
+                }
+            ];
+            
+            // Add issue-based suggestions
+            if (issues.some(issue => issue.type === 'verb')) {
+                suggestions.push({
+                    title: 'Fix Verb Agreement',
+                    description: 'Check that your verbs match their subjects in number.',
+                    priority: 'high'
+                });
+            }
+            
+            if (issues.some(issue => issue.type === 'spelling')) {
+                suggestions.push({
+                    title: 'Correct Spelling Errors',
+                    description: 'Review commonly misspelled words in your text.',
+                    priority: 'high'
+                });
+            }
+            
+            if (readability < 50) {
+                suggestions.push({
+                    title: 'Improve Readability',
+                    description: 'Simplify complex sentences and avoid jargon.',
+                    priority: 'medium'
+                });
+            }
+            
+            // Display suggestions
+            suggestions.forEach(suggestion => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                
+                let priorityBadge = '';
+                if (suggestion.priority === 'high') {
+                    priorityBadge = '<span style="color: var(--danger);"><i class="fas fa-exclamation-circle"></i> High Priority</span>';
+                } else if (suggestion.priority === 'medium') {
+                    priorityBadge = '<span style="color: var(--warning);"><i class="fas fa-info-circle"></i> Medium Priority</span>';
+                } else {
+                    priorityBadge = '<span style="color: var(--success);"><i class="fas fa-check-circle"></i> Low Priority</span>';
+                }
+                
+                suggestionItem.innerHTML = `
+                    <div class="suggestion-text">
+                        <h5>${suggestion.title}</h5>
+                        <p>${suggestion.description}</p>
+                    </div>
+                    <div class="suggestion-actions">
+                        ${priorityBadge}
+                        <button class="assistant-btn" onclick="applySuggestion('${suggestion.title}')">
+                            <i class="fas fa-magic"></i> Fix
+                        </button>
+                    </div>
+                `;
+                
+                suggestionsList.appendChild(suggestionItem);
+            });
+        }
+
+        // Text management functions
+        function clearText() {
+            document.getElementById('grammarInput').value = '';
+            document.getElementById('grammarOutput').innerHTML = '';
+            updateStats();
+            updateAnalysis(0, 0, []);
+        }
+
+        function pasteText() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('grammarInput').value = text;
+                updateStats();
+                checkGrammar();
+            }).catch(err => {
+                alert('Unable to paste text. Please paste manually.');
+            });
+        }
+
+        function copyText() {
+            const outputText = document.getElementById('grammarOutput').textContent;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('Corrected text copied to clipboard!');
+            });
+        }
+
+        function applyChanges() {
+            const outputText = document.getElementById('grammarOutput').textContent;
+            document.getElementById('grammarInput').value = outputText;
+            checkGrammar();
+        }
+
+        // AI Writing Assistant Functions
+        function improveTone() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "I've analyzed the tone of your writing. To make it more professional, try using more active voice and avoiding colloquial expressions. Consider revising sentences to be more direct and confident.";
+        }
+
+        function makeConcise() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "I've identified opportunities to make your writing more concise. Remove redundant phrases and unnecessary words. For example, 'in order to' can often be shortened to 'to' without losing meaning.";
+        }
+
+        function enhanceVocabulary() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "I suggest using more varied and precise vocabulary. Instead of repeating common words, try synonyms that convey your meaning more accurately. For instance, 'good' could become 'excellent', 'valuable', or 'beneficial' depending on context.";
+        }
+
+        function checkFormality() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "Your writing has a good balance of formality. For academic or business contexts, maintain this level. For more casual writing, you could use contractions and simpler sentence structures.";
+        }
+
+        function rephraseSentences() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "I've identified some sentences that could be rephrased for better flow. Try varying your sentence structure by mixing simple, compound, and complex sentences. This creates a more engaging reading experience.";
+        }
+
+        function expandIdeas() {
+            const assistantMessage = document.getElementById('assistantMessage');
+            assistantMessage.textContent = "To expand your ideas, consider adding examples, evidence, or explanations to support your main points. This will strengthen your arguments and provide more context for your readers.";
+        }
+
+        // Sample text loading
+        function loadSample(type) {
+            document.getElementById('grammarInput').value = sampleTexts[type];
+            updateStats();
+            checkGrammar();
+        }
+
+        // Apply specific suggestions
+        function applySuggestion(suggestionTitle) {
+            alert(`Applying fix for: ${suggestionTitle}\n\nIn a full implementation, this would automatically apply the suggested changes to your text.`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Education System | QuickBots & Grammar Tools</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+            --math: #7209b7;
+            --science: #f72585;
+            --writing: #4cc9f0;
+            --language: #38b000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-math {
+            background-color: var(--math);
+        }
+        
+        .btn-science {
+            background-color: var(--science);
+        }
+        
+        .btn-writing {
+            background-color: var(--writing);
+        }
+        
+        .btn-language {
+            background-color: var(--language);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-section h2 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* QuickBots Section */
+        .quickbots-section {
+            margin-bottom: 2rem;
+        }
+        
+        .quickbots-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .quickbots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .quickbot-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .quickbot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quickbot-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .math-bot {
+            background-color: rgba(114, 9, 183, 0.1);
+            color: var(--math);
+        }
+        
+        .science-bot {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--science);
+        }
+        
+        .writing-bot {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--writing);
+        }
+        
+        .language-bot {
+            background-color: rgba(56, 176, 0, 0.1);
+            color: var(--language);
+        }
+        
+        .quickbot-card h4 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .quickbot-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Grammar Tools Section */
+        .grammar-tools-section {
+            margin-bottom: 2rem;
+        }
+        
+        .grammar-tools-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .grammar-container {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .grammar-header {
+            background-color: var(--writing);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .grammar-header h3 {
+            margin-left: 10px;
+            color: white;
+            margin-bottom: 0;
+        }
+        
+        .grammar-input-area {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-section h4, .output-section h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .grammar-controls {
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .grammar-stats {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .stat {
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        
+        .suggestion {
+            background-color: #d1ecf1;
+            padding: 2px 4px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        /* AI Chat Container */
+        .ai-chat-container {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .chat-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            margin-left: 10px;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .ai-message {
+            justify-content: flex-start;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+        }
+        
+        .user-message .message-bubble {
+            background-color: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .ai-message .message-bubble {
+            background-color: #e9ecef;
+            color: var(--dark);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            background-color: white;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .course-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-image {
+            height: 150px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .course-content {
+            padding: 1rem;
+        }
+        
+        .course-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .course-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 3px;
+        }
+        
+        .progress-text {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--secondary);
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .grammar-input-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .quickbots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                        <li><a href="course.html">Courses</a></li>
+                        <li><a href="quizbots.html">QuickBots</a></li>
+                        <li><a href="grammar.html">Grammar</a></li>
+                        <li><a href="progress.html">Progress</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="sign.html" class="btn">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Learning Path</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="course.html"><i class="fas fa-book"></i> My Courses</a></li>
+                        <li><a href="assignment.html"><i class="fas fa-tasks"></i> Assignments</a></li>
+                        <li><a href="progress"><i class="fas fa-chart-line"></i> Progress</a></li>
+                        <li><a href="schedule"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
+                        <li><a href="help"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                    </ul>
+                    
+                    <h3>QuickBots</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-robot"></i> Math Assistant</a></li>
+                        <li><a href="#"><i class="fas fa-robot"></i> Science Helper</a></li>
+                        <li><a href="#"><i class="fas fa-robot"></i> Writing Coach</a></li>
+                        <li><a href="#"><i class="fas fa-robot"></i> Language Tutor</a></li>
+                    </ul>
+                    
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-spell-check"></i> Grammar Checker</a></li>
+                        <li><a href="#"><i class="fas fa-book-open"></i> Plagiarism Check</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i> Essay Grader</a></li>
+                        <li><a href="#"><i class="fas fa-theater-masks"></i> Flashcard Maker</a></li>
+                    </ul>
+                </div>
+                
+                <div class="content-area">
+                    <div class="welcome-section">
+                        <h2>Welcome back, Student!</h2>
+                        <p>Continue your learning journey with specialized AI assistants and writing tools.</p>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <h3>5</h3>
+                            <p>Active Courses</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>12</h3>
+                            <p>Completed Lessons</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>78%</h3>
+                            <p>Overall Progress</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>3</h3>
+                            <p>Pending Assignments</p>
+                        </div>
+                    </div>
+                    
+                    <!-- QuickBots Section -->
+                    <div class="quickbots-section">
+                        <h3>Specialized AI Assistants</h3>
+                        <div class="quickbots-grid">
+                            <div class="quickbot-card" data-bot="math">
+                                <div class="quickbot-icon math-bot">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <h4>Math Bot</h4>
+                                <p>Solve equations, understand concepts, and get step-by-step explanations.</p>
+                            </div>
+                            
+                            <div class="quickbot-card" data-bot="science">
+                                <div class="quickbot-icon science-bot">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <h4>Science Helper</h4>
+                                <p>Explore scientific concepts, experiments, and real-world applications.</p>
+                            </div>
+                            
+                            <div class="quickbot-card" data-bot="writing">
+                                <div class="quickbot-icon writing-bot">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <h4>Writing Coach</h4>
+                                <p>Improve your writing with feedback, suggestions, and style tips.</p>
+                            </div>
+                            
+                            <div class="quickbot-card" data-bot="language">
+                                <div class="quickbot-icon language-bot">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <h4>Language Tutor</h4>
+                                <p>Practice vocabulary, grammar, and conversation in multiple languages.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grammar Tools Section -->
+                    <div class="grammar-tools-section">
+                        <h3>Writing & Grammar Assistant</h3>
+                        <div class="grammar-container">
+                            <div class="grammar-header">
+                                <i class="fas fa-spell-check"></i>
+                                <h3>Grammar & Style Checker</h3>
+                            </div>
+                            <div class="grammar-input-area">
+                                <div class="input-section">
+                                    <h4>Your Text</h4>
+                                    <textarea id="grammarInput" placeholder="Type or paste your text here for analysis...">The students was happy to recieve there grades. They done well on there exams and are excited for the next semester. Each of the students have improved significantly.</textarea>
+                                </div>
+                                <div class="output-section">
+                                    <h4>Corrected Text</h4>
+                                    <textarea id="grammarOutput" readonly></textarea>
+                                </div>
+                            </div>
+                            <div class="grammar-controls">
+                                <div class="grammar-stats">
+                                    <div class="stat">
+                                        <strong id="wordCount">0</strong> words
+                                    </div>
+                                    <div class="stat">
+                                        <strong id="issueCount">0</strong> issues
+                                    </div>
+                                    <div class="stat">
+                                        <strong id="readabilityScore">0</strong> readability
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-writing" id="checkGrammar">
+                                        <i class="fas fa-search"></i> Check Text
+                                    </button>
+                                    <button class="btn" id="clearText">
+                                        <i class="fas fa-broom"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Chat Section -->
+                    <div class="ai-chat-container">
+                        <div class="chat-header">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI Learning Assistant</h3>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message ai-message">
+                                <div class="message-bubble">
+                                    Hello! I'm your AI learning assistant. How can I help you with your studies today?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="Ask me anything about your courses...">
+                            <button class="btn" id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    
+                    <h3>Recommended Courses</h3>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-image">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="course-content">
+                                <h4>Advanced Mathematics</h4>
+                                <p>Master calculus, algebra, and advanced mathematical concepts.</p>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                                <div class="progress-text">65% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <div class="course-content">
+                                <h4>Chemistry Fundamentals</h4>
+                                <p>Explore the building blocks of matter and chemical reactions.</p>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 30%"></div>
+                                </div>
+                                <div class="progress-text">30% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div class="course-content">
+                                <h4>Python Programming</h4>
+                                <p>Learn programming basics with Python and build your first applications.</p>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 80%"></div>
+                                </div>
+                                <div class="progress-text">80% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-card">
+                            <div class="course-image">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <div class="course-content">
+                                <h4>World History</h4>
+                                <p>Journey through major historical events that shaped our world.</p>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 45%"></div>
+                                </div>
+                                <div class="progress-text">45% Complete</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QuickBot Modal -->
+    <div class="modal" id="quickbotModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">QuickBot Assistant</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="course.html">Courses</a></li>
+                        <li><a href="pricing">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Grammar Tools Functionality
+        document.getElementById('checkGrammar').addEventListener('click', checkGrammar);
+        document.getElementById('clearText').addEventListener('click', clearText);
+        document.getElementById('grammarInput').addEventListener('input', updateStats);
+        
+        // QuickBots functionality
+        const quickbotCards = document.querySelectorAll('.quickbot-card');
+        quickbotCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const botType = this.getAttribute('data-bot');
+                openQuickBot(botType);
+            });
+        });
+        
+        // Modal functionality
+        document.querySelector('.close-modal').addEventListener('click', closeModal);
+        document.getElementById('quickbotModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        
+        // Initialize stats
+        updateStats();
+        
+        function checkGrammar() {
+            const inputText = document.getElementById('grammarInput').value;
+            const outputElement = document.getElementById('grammarOutput');
+            
+            if (!inputText.trim()) {
+                outputElement.value = "Please enter some text to check.";
+                return;
+            }
+            
+            // Simulate grammar checking with common error patterns
+            let correctedText = inputText;
+            
+            // Common grammar corrections
+            correctedText = correctedText.replace(/\bwas\b/g, 'were');
+            correctedText = correctedText.replace(/\brecieve\b/g, 'receive');
+            correctedText = correctedText.replace(/\bthere\b/g, 'their');
+            correctedText = correctedText.replace(/\bdone\b/g, 'did');
+            correctedText = correctedText.replace(/\bhave\b/g, 'has');
+            
+            // Add highlighting for corrections
+            correctedText = correctedText.replace(/\b(were|receive|their|did|has)\b/g, '<span class="suggestion">$1</span>');
+            
+            outputElement.innerHTML = correctedText;
+            
+            // Update issue count
+            const issueCount = (inputText.match(/\b(was|recieve|there|done|have)\b/g) || []).length;
+            document.getElementById('issueCount').textContent = issueCount;
+            
+            // Calculate readability score (simplified)
+            const wordCount = inputText.trim().split(/\s+/).length;
+            const sentenceCount = (inputText.match(/[.!?]+/g) || []).length;
+            const avgSentenceLength = sentenceCount > 0 ? wordCount / sentenceCount : 0;
+            const readability = Math.max(10, Math.min(100, 100 - (avgSentenceLength * 2)));
+            document.getElementById('readabilityScore').textContent = Math.round(readability);
+        }
+        
+        function clearText() {
+            document.getElementById('grammarInput').value = '';
+            document.getElementById('grammarOutput').value = '';
+            updateStats();
+        }
+        
+        function updateStats() {
+            const text = document.getElementById('grammarInput').value;
+            const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+            document.getElementById('wordCount').textContent = wordCount;
+            
+            // Update issue count in real-time
+            const issueCount = (text.match(/\b(was|recieve|there|done|have)\b/g) || []).length;
+            document.getElementById('issueCount').textContent = issueCount;
+        }
+        
+        function openQuickBot(botType) {
+            const modal = document.getElementById('quickbotModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            
+            let title = '';
+            let content = '';
+            
+            switch(botType) {
+                case 'math':
+                    title = 'Math Assistant';
+                    content = `
+                        <div class="quickbot-detail">
+                            <div class="quickbot-icon math-bot" style="margin: 0 auto 1rem; display: block; width: 80px; height: 80px;">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h4 style="text-align: center; margin-bottom: 1rem;">Math Problem Solver</h4>
+                            <p>I can help you with:</p>
+                            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                <li>Solving equations and inequalities</li>
+                                <li>Explaining mathematical concepts</li>
+                                <li>Step-by-step problem solutions</li>
+                                <li>Graphing functions and data</li>
+                                <li>Preparing for math tests</li>
+                            </ul>
+                            <div style="margin-top: 1.5rem;">
+                                <textarea placeholder="Enter your math problem or question here..." style="width: 100%; height: 100px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;"></textarea>
+                                <button class="btn btn-math" style="width: 100%;">
+                                    <i class="fas fa-robot"></i> Get Math Help
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'science':
+                    title = 'Science Helper';
+                    content = `
+                        <div class="quickbot-detail">
+                            <div class="quickbot-icon science-bot" style="margin: 0 auto 1rem; display: block; width: 80px; height: 80px;">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h4 style="text-align: center; margin-bottom: 1rem;">Science Concept Explorer</h4>
+                            <p>I can help you with:</p>
+                            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                <li>Understanding scientific theories</li>
+                                <li>Explaining biological processes</li>
+                                <li>Chemistry concepts and reactions</li>
+                                <li>Physics principles and laws</li>
+                                <li>Science project guidance</li>
+                            </ul>
+                            <div style="margin-top: 1.5rem;">
+                                <textarea placeholder="Enter your science question here..." style="width: 100%; height: 100px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;"></textarea>
+                                <button class="btn btn-science" style="width: 100%;">
+                                    <i class="fas fa-robot"></i> Get Science Help
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'writing':
+                    title = 'Writing Coach';
+                    content = `
+                        <div class="quickbot-detail">
+                            <div class="quickbot-icon writing-bot" style="margin: 0 auto 1rem; display: block; width: 80px; height: 80px;">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <h4 style="text-align: center; margin-bottom: 1rem;">Writing Improvement Assistant</h4>
+                            <p>I can help you with:</p>
+                            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                <li>Essay structure and organization</li>
+                                <li>Grammar and punctuation</li>
+                                <li>Vocabulary enhancement</li>
+                                <li>Thesis development</li>
+                                <li>Citation and referencing</li>
+                            </ul>
+                            <div style="margin-top: 1.5rem;">
+                                <textarea placeholder="Paste your writing here for feedback..." style="width: 100%; height: 100px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;"></textarea>
+                                <button class="btn btn-writing" style="width: 100%;">
+                                    <i class="fas fa-robot"></i> Get Writing Feedback
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'language':
+                    title = 'Language Tutor';
+                    content = `
+                        <div class="quickbot-detail">
+                            <div class="quickbot-icon language-bot" style="margin: 0 auto 1rem; display: block; width: 80px; height: 80px;">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <h4 style="text-align: center; margin-bottom: 1rem;">Language Learning Partner</h4>
+                            <p>I can help you with:</p>
+                            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                                <li>Vocabulary building</li>
+                                <li>Grammar rules and usage</li>
+                                <li>Pronunciation guidance</li>
+                                <li>Conversation practice</li>
+                                <li>Cultural context</li>
+                            </ul>
+                            <div style="margin-top: 1.5rem;">
+                                <div style="margin-bottom: 1rem;">
+                                    <label for="languageSelect">Select Language:</label>
+                                    <select id="languageSelect" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                                        <option value="spanish">Spanish</option>
+                                        <option value="french">French</option>
+                                        <option value="german">German</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="chinese">Chinese</option>
+                                    </select>
+                                </div>
+                                <textarea placeholder="Enter text for translation or practice..." style="width: 100%; height: 100px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 1rem;"></textarea>
+                                <button class="btn btn-language" style="width: 100%;">
+                                    <i class="fas fa-robot"></i> Get Language Help
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            modalTitle.textContent = title;
+            modalContent.innerHTML = content;
+            modal.style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('quickbotModal').style.display = 'none';
+        }
+        
+        // Chat functionality
+        document.getElementById('sendMessage').addEventListener('click', sendMessage);
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            
+            // Clear input
+            input.value = '';
+            
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                const aiResponse = generateAIResponse(message);
+                addMessage(aiResponse, 'ai');
+            }, 1000);
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            bubbleDiv.textContent = text;
+            
+            messageDiv.appendChild(bubbleDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function generateAIResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            
+            // Simple response logic - in a real system, this would connect to an AI API
+            if (lowerMessage.includes('math') || lowerMessage.includes('calculus') || lowerMessage.includes('algebra')) {
+                return "I can help with mathematics! Would you like me to explain a specific concept, help with a problem, or provide practice exercises? You can also try our specialized Math Bot for more detailed assistance.";
+            } else if (lowerMessage.includes('science') || lowerMessage.includes('chemistry') || lowerMessage.includes('physics')) {
+                return "Science is fascinating! I can explain scientific concepts, help with experiments, or clarify theories. What specific topic are you studying? For specialized help, try our Science Helper bot.";
+            } else if (lowerMessage.includes('programming') || lowerMessage.includes('python') || lowerMessage.includes('code')) {
+                return "Programming is a valuable skill! I can help explain coding concepts, debug issues, or suggest learning resources. What are you working on?";
+            } else if (lowerMessage.includes('history') || lowerMessage.includes('historical')) {
+                return "History helps us understand our world. I can provide historical context, explain events, or discuss historical figures. What period are you studying?";
+            } else if (lowerMessage.includes('writing') || lowerMessage.includes('essay') || lowerMessage.includes('grammar')) {
+                return "I can help with writing! Try our Grammar Tools for checking your text, or consult the Writing Coach bot for more personalized feedback on structure and style.";
+            } else if (lowerMessage.includes('language') || lowerMessage.includes('spanish') || lowerMessage.includes('french')) {
+                return "Language learning is exciting! I can help with vocabulary, grammar, or conversation practice. For specialized language tutoring, try our Language Tutor bot.";
+            } else if (lowerMessage.includes('help') || lowerMessage.includes('confused')) {
+                return "I'm here to help! Please tell me which subject or concept you're having trouble with, and I'll do my best to explain it clearly. You can also try our specialized QuickBots for targeted assistance.";
+            } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                return "Hello! I'm your AI learning assistant. How can I help with your studies today? You can ask me about any subject or try our specialized QuickBots for math, science, writing, or language help.";
+            } else {
+                return "That's an interesting question! I'd be happy to help. Could you provide more details about what you'd like to learn or which subject this relates to?";
+            }
+        }
+    </script>
+</body>
+</html>

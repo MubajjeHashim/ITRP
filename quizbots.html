@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizBots | AI Education System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --danger: #e63946;
+            --warning: #fca311;
+            --math: #7209b7;
+            --science: #f72585;
+            --writing: #4cc9f0;
+            --language: #38b000;
+            --correct: #4bb543;
+            --incorrect: #ff3333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-success {
+            background-color: var(--correct);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-header h2 {
+            color: var(--secondary);
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* QuizBots Section */
+        .quizbots-section {
+            margin-bottom: 2rem;
+        }
+        
+        .quizbots-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .quizbots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .quizbot-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .quizbot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quizbot-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .quizbot-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .quizbot-info h4 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .quizbot-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .quizbot-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .quizbot-details span {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quizbot-details i {
+            margin-right: 0.5rem;
+        }
+        
+        .quizbot-progress {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 3px;
+        }
+        
+        .progress-text {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+        }
+        
+        /* Active Quiz Section */
+        .active-quiz-section {
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .quiz-container {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .quiz-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .quiz-info h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .quiz-stats {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .quiz-stat {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .quiz-stat span {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .quiz-content {
+            padding: 1.5rem;
+        }
+        
+        .question-container {
+            margin-bottom: 2rem;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option {
+            padding: 1rem 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .option.correct {
+            border-color: var(--correct);
+            background-color: rgba(75, 181, 67, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--incorrect);
+            background-color: rgba(255, 51, 51, 0.1);
+        }
+        
+        .option input {
+            margin-right: 1rem;
+        }
+        
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        .quiz-navigation {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .question-indicators {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .question-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e9ecef;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .question-indicator.current {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .question-indicator.answered {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .question-indicator.review {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        /* Quiz Results */
+        .quiz-results {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-icon.pass {
+            color: var(--correct);
+        }
+        
+        .result-icon.fail {
+            color: var(--incorrect);
+        }
+        
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .result-message {
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-stat {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .result-stat span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* AI Quiz Assistant */
+        .ai-quiz-assistant {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        
+        .assistant-header {
+            background-color: var(--warning);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .assistant-header h3 {
+            margin-left: 10px;
+        }
+        
+        .assistant-content {
+            padding: 1.5rem;
+        }
+        
+        .assistant-message {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .assistant-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .assistant-btn {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .assistant-btn:hover {
+            background-color: #f8f9fa;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-section {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .quiz-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .quiz-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .quiz-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .quiz-navigation {
+                justify-content: space-between;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>AI EduSystem</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="my-courses.html">My Courses</a></li>
+                        <li><a href="quickbots.html">QuickBots</a></li>
+                        <li><a href="#" class="active">QuizBots</a></li>
+                        <li><a href="grammar-tools.html">Grammar Tools</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#" class="btn">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Quiz Categories</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-star"></i> Recommended</a></li>
+                        <li><a href="#"><i class="fas fa-calculator"></i> Mathematics</a></li>
+                        <li><a href="#"><i class="fas fa-flask"></i> Science</a></li>
+                        <li><a href="#"><i class="fas fa-language"></i> Languages</a></li>
+                        <li><a href="#"><i class="fas fa-laptop-code"></i> Computer Science</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+                    </ul>
+                    
+                    <h3>Quiz Types</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-bolt"></i> Quick Quizzes</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i> Practice Tests</a></li>
+                        <li><a href="#"><i class="fas fa-trophy"></i> Challenge Mode</a></li>
+                        <li><a href="#"><i class="fas fa-users"></i> Group Quizzes</a></li>
+                    </ul>
+                    
+                    <h3>My Progress</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Performance</a></li>
+                        <li><a href="#"><i class="fas fa-award"></i> Achievements</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i> Quiz History</a></li>
+                        <li><a href="#"><i class="fas fa-target"></i> Weak Areas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="content-area">
+                    <div class="page-header">
+                        <h2>QuizBots - Interactive Learning</h2>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Custom Quiz
+                        </a>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <h3>24</h3>
+                            <p>Quizzes Completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>78%</h3>
+                            <p>Average Score</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5</h3>
+                            <p>Perfect Scores</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>12</h3>
+                            <p>Streak Days</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommended Quizzes -->
+                    <div class="quizbots-section">
+                        <h3>Recommended For You</h3>
+                        <div class="quizbots-grid" id="quizbotsGrid">
+                            <div class="quizbot-card" data-quiz="math-basics">
+                                <div class="quizbot-header">
+                                    <div class="quizbot-icon">
+                                        <i class="fas fa-calculator"></i>
+                                    </div>
+                                    <div class="quizbot-info">
+                                        <h4>Algebra Fundamentals</h4>
+                                        <p>15 questions • 20 minutes</p>
+                                    </div>
+                                </div>
+                                <div class="quizbot-details">
+                                    <span><i class="fas fa-signal"></i> Intermediate</span>
+                                    <span><i class="fas fa-user"></i> 2.4k attempts</span>
+                                </div>
+                                <div class="quizbot-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 70%"></div>
+                                    </div>
+                                    <div class="progress-text">Last score: 14/20</div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz('math-basics')">
+                                    <i class="fas fa-play"></i> Start Quiz
+                                </button>
+                            </div>
+                            
+                            <div class="quizbot-card" data-quiz="chemistry">
+                                <div class="quizbot-header">
+                                    <div class="quizbot-icon">
+                                        <i class="fas fa-flask"></i>
+                                    </div>
+                                    <div class="quizbot-info">
+                                        <h4>Chemical Reactions</h4>
+                                        <p>12 questions • 15 minutes</p>
+                                    </div>
+                                </div>
+                                <div class="quizbot-details">
+                                    <span><i class="fas fa-signal"></i> Beginner</span>
+                                    <span><i class="fas fa-user"></i> 1.8k attempts</span>
+                                </div>
+                                <div class="quizbot-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 40%"></div>
+                                    </div>
+                                    <div class="progress-text">Last score: 8/20</div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz('chemistry')">
+                                    <i class="fas fa-play"></i> Start Quiz
+                                </button>
+                            </div>
+                            
+                            <div class="quizbot-card" data-quiz="python">
+                                <div class="quizbot-header">
+                                    <div class="quizbot-icon">
+                                        <i class="fas fa-laptop-code"></i>
+                                    </div>
+                                    <div class="quizbot-info">
+                                        <h4>Python Basics</h4>
+                                        <p>20 questions • 30 minutes</p>
+                                    </div>
+                                </div>
+                                <div class="quizbot-details">
+                                    <span><i class="fas fa-signal"></i> Beginner</span>
+                                    <span><i class="fas fa-user"></i> 3.1k attempts</span>
+                                </div>
+                                <div class="quizbot-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 90%"></div>
+                                    </div>
+                                    <div class="progress-text">Last score: 18/20</div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz('python')">
+                                    <i class="fas fa-play"></i> Start Quiz
+                                </button>
+                            </div>
+                            
+                            <div class="quizbot-card" data-quiz="grammar">
+                                <div class="quizbot-header">
+                                    <div class="quizbot-icon">
+                                        <i class="fas fa-pen-fancy"></i>
+                                    </div>
+                                    <div class="quizbot-info">
+                                        <h4>English Grammar</h4>
+                                        <p>10 questions • 12 minutes</p>
+                                    </div>
+                                </div>
+                                <div class="quizbot-details">
+                                    <span><i class="fas fa-signal"></i> Intermediate</span>
+                                    <span><i class="fas fa-user"></i> 4.2k attempts</span>
+                                </div>
+                                <div class="quizbot-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 60%"></div>
+                                    </div>
+                                    <div class="progress-text">Last score: 12/20</div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz('grammar')">
+                                    <i class="fas fa-play"></i> Start Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Quiz Section -->
+                    <div class="active-quiz-section" id="activeQuizSection">
+                        <div class="quiz-container">
+                            <div class="quiz-header">
+                                <div class="quiz-info">
+                                    <h3 id="quizTitle">Algebra Fundamentals</h3>
+                                    <p>Test your knowledge of basic algebraic concepts</p>
+                                </div>
+                                <div class="quiz-stats">
+                                    <div class="quiz-stat">
+                                        <span id="currentQuestion">1</span>
+                                        <small>of 15</small>
+                                    </div>
+                                    <div class="quiz-stat">
+                                        <span id="timeRemaining">20:00</span>
+                                        <small>remaining</small>
+                                    </div>
+                                    <div class="quiz-stat">
+                                        <span id="score">0</span>
+                                        <small>points</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quiz-content">
+                                <div class="question-container">
+                                    <div class="question-text" id="questionText">
+                                        What is the value of x in the equation: 2x + 5 = 13?
+                                    </div>
+                                    <div class="options-container" id="optionsContainer">
+                                        <!-- Options will be populated by JavaScript -->
+                                    </div>
+                                    <div class="question-indicators" id="questionIndicators">
+                                        <!-- Question indicators will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                                <div class="quiz-controls">
+                                    <div class="quiz-navigation">
+                                        <button class="btn btn-outline" id="prevQuestion">
+                                            <i class="fas fa-arrow-left"></i> Previous
+                                        </button>
+                                        <button class="btn btn-outline" id="markForReview">
+                                            <i class="fas fa-flag"></i> Mark for Review
+                                        </button>
+                                        <button class="btn btn-primary" id="nextQuestion">
+                                            Next <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-success" id="submitQuiz">
+                                        <i class="fas fa-paper-plane"></i> Submit Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Quiz Assistant -->
+                        <div class="ai-quiz-assistant">
+                            <div class="assistant-header">
+                                <i class="fas fa-robot"></i>
+                                <h3>QuizBot Assistant</h3>
+                            </div>
+                            <div class="assistant-content">
+                                <div class="assistant-message" id="assistantMessage">
+                                    Need help with this question? I can provide hints or explanations!
+                                </div>
+                                <div class="assistant-actions">
+                                    <button class="assistant-btn" onclick="requestHint()">
+                                        <i class="fas fa-lightbulb"></i> Get Hint
+                                    </button>
+                                    <button class="assistant-btn" onclick="requestExplanation()">
+                                        <i class="fas fa-book"></i> Explain Concept
+                                    </button>
+                                    <button class="assistant-btn" onclick="requestExample()">
+                                        <i class="fas fa-list-ol"></i> Show Example
+                                    </button>
+                                    <button class="assistant-btn" onclick="eliminateOptions()">
+                                        <i class="fas fa-times-circle"></i> Eliminate Options
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Results -->
+                    <div class="quiz-results" id="quizResults">
+                        <div class="result-icon pass">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="result-score" id="finalScore">85%</div>
+                        <div class="result-message" id="resultMessage">
+                            Great job! You've passed the quiz with an excellent score.
+                        </div>
+                        <div class="result-details">
+                            <div class="result-stat">
+                                <span id="correctAnswers">17</span>
+                                Correct Answers
+                            </div>
+                            <div class="result-stat">
+                                <span id="incorrectAnswers">3</span>
+                                Incorrect Answers
+                            </div>
+                            <div class="result-stat">
+                                <span id="timeSpent">12:34</span>
+                                Time Spent
+                            </div>
+                            <div class="result-stat">
+                                <span id="rank">Top 15%</span>
+                                Overall Rank
+                            </div>
+                        </div>
+                        <div class="quiz-controls">
+                            <button class="btn btn-outline" onclick="reviewQuiz()">
+                                <i class="fas fa-search"></i> Review Answers
+                            </button>
+                            <button class="btn btn-primary" onclick="retakeQuiz()">
+                                <i class="fas fa-redo"></i> Retake Quiz
+                            </button>
+                            <button class="btn btn-success" onclick="shareResults()">
+                                <i class="fas fa-share"></i> Share Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI EduSystem</h3>
+                    <p>Transforming education through artificial intelligence and personalized learning experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 AI EduSystem. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz Data
+        const quizzes = {
+            'math-basics': {
+                title: 'Algebra Fundamentals',
+                description: 'Test your knowledge of basic algebraic concepts',
+                questions: [
+                    {
+                        text: 'What is the value of x in the equation: 2x + 5 = 13?',
+                        options: ['x = 4', 'x = 5', 'x = 6', 'x = 7'],
+                        correct: 0,
+                        explanation: 'To solve for x, subtract 5 from both sides: 2x = 8, then divide by 2: x = 4.'
+                    },
+                    {
+                        text: 'Simplify the expression: 3(x + 2) - 2x',
+                        options: ['x + 6', 'x + 2', '5x + 6', '5x + 2'],
+                        correct: 0,
+                        explanation: 'First distribute: 3x + 6 - 2x, then combine like terms: x + 6.'
+                    },
+                    {
+                        text: 'What is the slope of the line y = 3x - 2?',
+                        options: ['3', '-2', '2', '-3'],
+                        correct: 0,
+                        explanation: 'In the slope-intercept form y = mx + b, m represents the slope. Here m = 3.'
+                    },
+                    {
+                        text: 'Solve the inequality: 4x - 7 > 5',
+                        options: ['x > 3', 'x < 3', 'x > 2', 'x < 2'],
+                        correct: 0,
+                        explanation: 'Add 7 to both sides: 4x > 12, then divide by 4: x > 3.'
+                    }
+                ]
+            },
+            'chemistry': {
+                title: 'Chemical Reactions',
+                description: 'Test your knowledge of chemical reactions and equations',
+                questions: [
+                    {
+                        text: 'What is the chemical formula for water?',
+                        options: ['H2O', 'CO2', 'NaCl', 'CH4'],
+                        correct: 0,
+                        explanation: 'Water is composed of two hydrogen atoms and one oxygen atom, hence H2O.'
+                    },
+                    {
+                        text: 'Which of the following is a balanced chemical equation?',
+                        options: ['2H2 + O2 → 2H2O', 'H2 + O2 → H2O', '2H2 + 2O2 → 2H2O', 'H2 + O2 → 2H2O'],
+                        correct: 0,
+                        explanation: 'The equation 2H2 + O2 → 2H2O has equal numbers of each atom on both sides.'
+                    },
+                    {
+                        text: 'What type of reaction is: Na + Cl → NaCl?',
+                        options: ['Synthesis', 'Decomposition', 'Single Replacement', 'Double Replacement'],
+                        correct: 0,
+                        explanation: 'This is a synthesis reaction where two elements combine to form a compound.'
+                    }
+                ]
+            }
+        };
+
+        // Current Quiz State
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizTimer = null;
+        let timeRemaining = 1200; // 20 minutes in seconds
+
+        // DOM Elements
+        const quizbotsGrid = document.getElementById('quizbotsGrid');
+        const activeQuizSection = document.getElementById('activeQuizSection');
+        const quizResults = document.getElementById('quizResults');
+        const quizTitle = document.getElementById('quizTitle');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const questionIndicators = document.getElementById('questionIndicators');
+        const currentQuestionElement = document.getElementById('currentQuestion');
+        const timeRemainingElement = document.getElementById('timeRemaining');
+        const scoreElement = document.getElementById('score');
+        const assistantMessage = document.getElementById('assistantMessage');
+
+        // Start a quiz
+        function startQuiz(quizId) {
+            currentQuiz = quizzes[quizId];
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentQuiz.questions.length).fill(null);
+            timeRemaining = 1200; // Reset timer
+            
+            // Update UI
+            quizTitle.textContent = currentQuiz.title;
+            quizbotsGrid.style.display = 'none';
+            activeQuizSection.style.display = 'block';
+            quizResults.style.display = 'none';
+            
+            // Initialize quiz
+            updateQuestion();
+            createQuestionIndicators();
+            startTimer();
+        }
+
+        // Update the current question display
+        function updateQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            
+            questionText.textContent = question.text;
+            currentQuestionElement.textContent = currentQuestionIndex + 1;
+            
+            // Clear and populate options
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <input type="radio" name="option" value="${index}" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                    <label>${option}</label>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update question indicators
+            updateQuestionIndicators();
+        }
+
+        // Create question indicators
+        function createQuestionIndicators() {
+            questionIndicators.innerHTML = '';
+            currentQuiz.questions.forEach((_, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = 'question-indicator';
+                indicator.textContent = index + 1;
+                indicator.addEventListener('click', () => navigateToQuestion(index));
+                questionIndicators.appendChild(indicator);
+            });
+        }
+
+        // Update question indicators
+        function updateQuestionIndicators() {
+            const indicators = questionIndicators.querySelectorAll('.question-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.remove('current', 'answered', 'review');
+                
+                if (index === currentQuestionIndex) {
+                    indicator.classList.add('current');
+                } else if (userAnswers[index] !== null) {
+                    indicator.classList.add('answered');
+                }
+            });
+        }
+
+        // Select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            updateQuestion();
+        }
+
+        // Navigate to a specific question
+        function navigateToQuestion(index) {
+            currentQuestionIndex = index;
+            updateQuestion();
+        }
+
+        // Start the quiz timer
+        function startTimer() {
+            clearInterval(quizTimer);
+            quizTimer = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timeRemainingElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Submit the quiz
+        function submitQuiz() {
+            clearInterval(quizTimer);
+            
+            // Calculate score
+            let correctCount = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === currentQuiz.questions[index].correct) {
+                    correctCount++;
+                }
+            });
+            
+            const score = Math.round((correctCount / currentQuiz.questions.length) * 100);
+            
+            // Display results
+            document.getElementById('finalScore').textContent = `${score}%`;
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('incorrectAnswers').textContent = currentQuiz.questions.length - correctCount;
+            
+            // Set result message
+            const resultMessage = document.getElementById('resultMessage');
+            if (score >= 80) {
+                resultMessage.textContent = "Excellent work! You've mastered this topic.";
+                document.querySelector('.result-icon').className = 'result-icon pass';
+                document.querySelector('.result-icon i').className = 'fas fa-trophy';
+            } else if (score >= 60) {
+                resultMessage.textContent = "Good job! You have a solid understanding of the material.";
+                document.querySelector('.result-icon').className = 'result-icon pass';
+                document.querySelector('.result-icon i').className = 'fas fa-award';
+            } else {
+                resultMessage.textContent = "Keep practicing! Review the material and try again.";
+                document.querySelector('.result-icon').className = 'result-icon fail';
+                document.querySelector('.result-icon i').className = 'fas fa-redo';
+            }
+            
+            // Show results
+            activeQuizSection.style.display = 'none';
+            quizResults.style.display = 'block';
+        }
+
+        // AI Assistant Functions
+        function requestHint() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            const hints = [
+                "Try breaking down the problem into smaller steps.",
+                "Consider what you already know about this topic.",
+                "Look for keywords in the question that might give you clues.",
+                "Eliminate obviously wrong answers first."
+            ];
+            
+            assistantMessage.textContent = `Hint: ${hints[Math.floor(Math.random() * hints.length)]}`;
+        }
+
+        function requestExplanation() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            assistantMessage.textContent = `Concept Explanation: ${question.explanation}`;
+        }
+
+        function requestExample() {
+            const examples = [
+                "For example, if you have 2x = 10, you would divide both sides by 2 to get x = 5.",
+                "Consider this similar problem: 3(x + 4) = 15. First distribute: 3x + 12 = 15, then solve: 3x = 3, so x = 1.",
+                "Here's a parallel example: In the equation y = 2x + 3, the slope is 2 and the y-intercept is 3."
+            ];
+            
+            assistantMessage.textContent = `Example: ${examples[Math.floor(Math.random() * examples.length)]}`;
+        }
+
+        function eliminateOptions() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            const incorrectOptions = [];
+            
+            question.options.forEach((option, index) => {
+                if (index !== question.correct) {
+                    incorrectOptions.push(index);
+                }
+            });
+            
+            // Randomly eliminate one or two incorrect options
+            const toEliminate = incorrectOptions.slice(0, Math.floor(Math.random() * 2) + 1);
+            
+            toEliminate.forEach(index => {
+                const optionElement = optionsContainer.children[index];
+                optionElement.classList.add('incorrect');
+                optionElement.style.opacity = '0.5';
+                optionElement.style.pointerEvents = 'none';
+            });
+            
+            assistantMessage.textContent = "I've eliminated some incorrect options. Now focus on the remaining choices!";
+        }
+
+        // Quiz Navigation
+        document.getElementById('prevQuestion').addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestion();
+            }
+        });
+
+        document.getElementById('nextQuestion').addEventListener('click', () => {
+            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                currentQuestionIndex++;
+                updateQuestion();
+            }
+        });
+
+        document.getElementById('markForReview').addEventListener('click', () => {
+            const indicator = questionIndicators.children[currentQuestionIndex];
+            indicator.classList.toggle('review');
+        });
+
+        document.getElementById('submitQuiz').addEventListener('click', submitQuiz);
+
+        // Results Actions
+        function reviewQuiz() {
+            // In a real implementation, this would show a detailed review of all questions and answers
+            alert('Review feature would show detailed answers and explanations for each question.');
+        }
+
+        function retakeQuiz() {
+            startQuiz(Object.keys(quizzes).find(key => quizzes[key] === currentQuiz));
+        }
+
+        function shareResults() {
+            alert('Results sharing feature would allow you to share your score on social media or with instructors.');
+        }
+    </script>
+</body>
+</html>
